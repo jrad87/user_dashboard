@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %} {% endblock %}</title>
+		<meta charset="utf-8">
+		<meta name="description" content="{% block description %} {% endblock %}">
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'user_dashboard/css/normalize.css' %}">
+		<link rel="stylesheet" href="{% static 'user_dashboard/css/skeleton.css' %}">
+		<link rel="stylesheet" href="{% static 'user_dashboard/css/style.css' %}">
+		{% block extra_styles %}{% endblock %}
+	</head>
+	<body>
+		<nav id="nav">
+			<div class="container">
+			{% block nav %}
+				<div class="row">
+					<div class="two columns">
+						<span>MyApps</span>
+					</div>
+					{% if request.session.current_user_id %}
+					<div class="two columns">
+						<span><a href="{% url 'dashboard:dashboard' %}">Dashboard</a></span>
+					</div>
+					<div class="two columns">
+						<span><a href="{% url 'dashboard:edit_user' %}">Edit Profile</a></span>
+					</div>
+					{% else %}
+					<div class="two columns">
+						<span><a href="{% url 'dashboard:index' %}">Home</a></span>
+					</div>
+					{% endif %}
+					{% if request.session.current_user_id %}
+					<div class="two offset-by-four columns">
+						<span><a href="{% url 'dashboard:signout' %}">Logout</a></span>
+					</div>
+					{% else %}
+					<div class="two offset-by-six columns">
+						<span><a href="{% url 'dashboard:signin' %}">Sign in</a></span>
+					</div>
+					{% endif %}
+
+				</div>
+			{% endblock %}
+			</div>
+		</nav>
+		<div id="main">
+			<div class="container">
+			{% block main %}
+			{% endblock %}
+			</div>
+		</div>
+		<div id="footer">
+			<div class="container">
+			{% block footer %}
+			<span>User Dashboard 2017</span>
+			{% endblock %} 
+			</div>
+		</div>
+	</body>
+</html>

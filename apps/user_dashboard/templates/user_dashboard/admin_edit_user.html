@@ -1,0 +1,36 @@
+{% extends 'user_dashboard/base.html' %}
+{% block title %}Edit {{user.first_name}}{% endblock %}
+{% block main %}
+<div class="row">
+	<div class="nine columns">
+		<h1>Edit user #{{user.id}}</h1>
+	</div>
+	<div class="three columns">
+		<a href="{% url 'dashboard:dashboard' %}">Return to Dashboard</a>
+	</div>
+</div>
+<div class="row">
+	<div class="six columns">
+		<h3>Edit Information</h3>
+		<ul id="info-errors">
+		<form action="{% url 'dashboard:edit_info_process' user_id=user.id %}" method="POST">
+			{% csrf_token %}
+			<label for="email">E-Mail Address</label>
+			<input name="email" type="text" value="{{user.email}}">
+			<label for="first_name">First Name:</label>
+			<input name="first_name" type="text" value="{{user.first_name}}">
+			<label for="last_name">Last Name</label>
+			<input name="last_name" type="text" value="{{user.last_name}}">
+			<label for="privileges">User Privileges</label>
+			<select name="privileges">
+				<option value="0">Normal</option>
+				<option value="9">Admin</option>
+			</select>
+			<button type="submit">Update</button>
+		</form>
+	</div>
+	<div class="six columns">
+	
+	</div>
+</div>
+{% endblock %}

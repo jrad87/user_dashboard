@@ -1,0 +1,38 @@
+{% extends 'user_dashboard/base.html' %}
+{% block title %}Home{% endblock %}
+{% block description %}Our app starts here{% endblock %}
+{% block main %}
+<div class="row">
+	<h1>Welcome</h1>
+	<p>
+	We're going to build a cool application using a MVC framework!
+	This application was built during the Coding Dojo 2017 February cohort!
+	</p>
+	<a href="{% url 'dashboard:signin' %}">Start</a>
+</div>
+<div class="row">
+	<div class="one-third column">
+		<h4>Manage Users</h4>
+		<p>
+			Using this application, you'll be able to add,
+			remove, and edit users of this application.
+		</p>
+	</div>
+	<div class="one-third column">
+		<h4>Leave Messages</h4>
+		<p>
+			Users will be able to leave a message for
+			another user in this application
+		</p>
+	</div>
+	<div class="one-third column">
+		<h4>Edit user information</h4>
+		<p>
+			Admins will be able to edit another user's
+			information (email adress, first name, last name.
+		</p>
+	</div>
+</div>
+{% endblock %}
+
+

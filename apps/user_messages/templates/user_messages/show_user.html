@@ -1,0 +1,74 @@
+{% extends 'user_dashboard/base.html' %}
+{% block title %}{{user.first_name}} {{user.last_name}}{% endblock %}
+{% block description %}Messaging page for {{user.first_name}}{% endblock %}
+{% block extra_styles %}
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'user_messages/css/style.css' %}">
+{% endblock extra_styles %}
+{% block main %}
+{% load tz %}
+{% timezone "America/Los_Angeles" %}
+<div class="row">
+	<h1>{{user.first_name}}</h1>
+	<ul class="user-info">
+		<li>Registered at: {{user.created_at}}</li>
+		<li>ID: {{user.id}}</li>
+		<li>E-Mail Address: {{user.email}}</li>
+		<li>Description: {{user.description}}</li>
+	</ul>
+</div>
+{% if request.session.current_user_id != user.id %}
+<div class="row">
+	<form action="{% url 'messages:post_message' user_id=user.id %}" method="POST">
+		{% csrf_token %}
+		<label for="text">
+		<textarea name="text" placeholder="Leave a message for {{user.first_name}}"></textarea> 
+		<button type="submit">Post Message</button>
+	</form>
+</div>
+{% endif %}
+<div class="row">
+{% for message, comments in threads %}
+	<div class="message">
+		<h4>{{message.message_from.first_name}} said at {{message.created_at}}:</h4>
+		<p>{{message.text}}</p>
+		{% if message.message_from.id == request.session.current_user_id %}
+		<form action="{% url 'messages:delete_message' user_id=user.id message_id=message.id %}" method="POST">
+			{% csrf_token %}
+			<input type="submit" value="delete">
+		</form>
+		{% endif %}
+	</div>
+	<div class="comments">
+		{% for comment in comments %}
+		{% with id=comment.comment_by.id %}
+		<div class="row">
+			<div class="comment nine columns">
+				<h5>{{comment.comment_by.first_name}} said at {{comment.created_at}}:</h5>
+				<p>{{comment.text}}</p>
+			</div>
+			{% if comment.comment_by.id == request.session.current_user_id %}
+			<div class="comment-actions three columns">
+				<form action="{% url 'messages:delete_comment' user_id=user.id comment_id=comment.id %}" method="POST">
+					{% csrf_token %}
+					<button type="submit">Delete</button>
+				</form>
+			</div>
+			{% endif %}
+		</div>
+		{% endwith %}
+		{% endfor %}
+		<div class="row">
+		<div class="nine columns">
+		<form action="{% url 'messages:post_comment' message_id=message.id user_id=user.id %}" method="POST">
+			{% csrf_token %}
+			<textarea name="text" placeholder="Write a comment"></textarea>
+			<button type="submit">Add comment</button>
+		</form>
+		</div>
+		</div>
+	</div>
+{% endfor %}
+</div>
+{% endtimezone %}
+{% endblock %}

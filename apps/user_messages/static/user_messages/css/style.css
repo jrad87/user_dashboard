@@ -1,0 +1,14 @@
+.message, .comment, .comment-actions{
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom:10px;
+        box-sizing: border-box;
+}
+.comment, .comment-actions{
+	height:100%;
+}
+.comments{
+        padding-left:30px;
+}
+

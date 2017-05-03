@@ -1,0 +1,33 @@
+{% extends 'user_dashboard/base.html' %}
+{% block title %}Register{% endblock %}
+{% block description %}Registration page{% endblock %}
+{% block main %}
+<div class="row">
+	<div id="form-container" class="one-third column">
+		<h5>Register</h5>
+		{% if messages %}
+		<ul id="registration-errors">
+			{% for message in messages %}
+			{% if message.extra_tags == 'register' %}
+			<li>{{message}}</li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<form action="{% url 'dashboard:register_process' %}" method="POST">
+			{% csrf_token %}
+			<label  for="first_name">First Name:</label>
+			<input name="first_name" type="text">
+			<label  for="last_name">Last Name:</label>
+			<input name="last_name" type="text">
+			<label  for="email">E-Mail Address</label>
+			<input name="email" type="text">
+			<label  for="password">Password:</label>
+			<input name="password" type="password">
+			<label  for="password_confirm">Confirm Password:</label>
+			<input name="password_confirm" type="password">
+			<button type="submit">Register</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

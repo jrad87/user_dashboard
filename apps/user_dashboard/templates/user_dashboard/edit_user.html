@@ -1,0 +1,85 @@
+{% extends 'user_dashboard/base.html' %}
+{% block title %}Edit your profile{% endblock %}
+{% block description %}Form for editing the current user's data.{% endblock %}
+{% block main %}
+{% with u_id=request.session.current_user_id %}
+<div class="row">
+	<div class="twelve columns">
+		<h1>Edit Profile</h1>
+		<ul id="general-messages">
+		{% if messages %}
+		{% for message in messages %}
+		{% if message.extra_tags == 'general' %}
+			<li>{{message}}</li>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="six columns">
+		<h2>Edit information</h2>
+		<ul id="info-errors">
+		{% if messages %}
+		{% for message in messages %}
+		{% if message.extra_tags == 'info' %}
+			<li>{{message}}</li>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		</ul>
+		<form action="{% url 'dashboard:edit_info_process' user_id=u_id %}" method="POST">
+			{% csrf_token %}
+			<label for="first_name">First Name:</label>
+			<input name="first_name" type="text" value="{{user.first_name}}">
+			<label for="last_name">Last Name:</label>
+			<input name="last_name" type="text" value="{{user.last_name}}">
+			<label for="email">E-Mail Address</label>
+			<input name="email" type="text" value="{{user.email}}">
+			<button type="submit">Save</button>
+		</form>
+	</div>
+	<div class="six columns">
+		<h2>Update Password</h2>
+		<ul id="password-errors">
+		{% if messages %}
+		{% for message in messages %}
+		{% if message.extra_tags == 'password' %}
+			<li>{{message}}</li>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		</ul>
+		<form action="{% url 'dashboard:edit_password_process' user_id=u_id %}" method="POST">
+			{% csrf_token %}
+			<label for="password">New Password:</label>
+			<input name="password" type="password">
+			<label for="password_confirm">Confirm New Password:</label>
+			<input name="password_confirm" type="password">
+			<button type="submit">Update</button>
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div class="six columns">
+		<h2>Update Description</h2>
+		<ul id="description-errors">
+		{% if messages %}
+		{% for message in messages %}
+		{% if message.extra_tags == 'description' %}
+			<li>{{message}}</li>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		</ul>
+		<form action="{% url 'dashboard:edit_description_process' user_id=u_id %}" method="POST">
+			{% csrf_token %}
+			<label for="description">Edit description:</label>
+			<textarea name="description" placeholder="{{user.description}}"></textarea>
+			<button type="submit">Save</button>
+		</form>
+	</div>
+</div>
+{% endwith %}
+{% endblock %}

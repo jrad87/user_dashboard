@@ -1,0 +1,26 @@
+{% extends 'user_dashboard/base.html' %}
+{% block title %}Sign In{% endblock %}
+{% block description %}Sign in page for our app{% endblock %}
+{% block main %}
+<div class="row">
+	<div id="form-container" class="one-third column">
+		<h5>Sign In</h5>
+		{% if messages %}
+		<ul>
+		{% for message in messages %}
+			<li>{{message}}</li>
+		{% endfor %}
+		</ul>
+		{% endif %}
+		<form action="{% url 'dashboard:signin_process' %}" method="POST">
+			{% csrf_token %}
+			<label for="email">E-Mail Address</label>
+			<input type="text" name="email">
+			<label for="password">Password</label>
+			<input name="password" type="password">
+			<button type="submit">Sign In!</button>
+		</form>
+		<a href="{% url 'dashboard:register' %}">Don't have an account? Register here</a>
+	</div>
+</div>
+{% endblock %}
